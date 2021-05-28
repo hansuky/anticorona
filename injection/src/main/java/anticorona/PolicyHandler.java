@@ -25,16 +25,16 @@ public class PolicyHandler{
 
         System.out.println("\n\n##### listener AcceptBooking : " + booked.toJson() + "\n\n");
 
-        // 접종예약접수(AcceptBooking) Logic //
-        // if(booked.isMe()){
-            Injection injection = new Injection();
-            injection.setStatus("Injection_Ready");
-            injection.setBookingId(booked.getBookingId());            
-            injection.setVaccineId(booked.getVaccineId());
-            injection.setUserId(booked.getUserId());
+        // 접종준비(AcceptBooking) //
+        
+        Injection injection = new Injection();
 
-            injectionRepository.save(injection);
-        // }
+        injection.setStatus("접종준비");
+        injection.setBookingId(booked.getBookingId());            
+        injection.setVaccineId(booked.getVaccineId());
+        injection.setUserId(booked.getUserId());
+
+        injectionRepository.save(injection);     
           
     }
 
@@ -46,17 +46,14 @@ public class PolicyHandler{
 
         System.out.println("\n\n##### listener AcceptCancelBooking : " + bookCancelled.toJson() + "\n\n");
 
-        // 접종예약취소(AcceptCancelBooking) Logic //
+        // 접종예약취소(AcceptCancelBooking) //        
+        Optional<Injection> injectionOptional = injectionRepository.findByBookingId(bookCancelled.getBookingId());
+        if(injectionOptional.isPresent()){
+            Injection injection = injectionOptional.get();
+            injection.setStatus("예약취소");
+            injectionRepository.save(injection);
+        }            
         
-        // if(bookCancelled.isMe()){
-            Optional<Injection> injectionOptional = injectionRepository.findByBookingId(bookCancelled.getBookingId());
-            if(injectionOptional.isPresent()){
-                Injection injection = injectionOptional.get();
-                injection.setStatus("Booking_Cancelled");
-                injectionRepository.save(injection);
-            }
-            
-        // }
     }
 
     @Autowired
@@ -69,23 +66,16 @@ public class PolicyHandler{
 
         System.out.println("\n\n##### listener RegCancelBooking : " + bookCancelled.toJson() + "\n\n");
 
-        // 접종예약취소 등록(RegCancelBooking) Logic //
-        // if(bookCancelled.isMe()){            
-            Cancellation cancellation = new Cancellation();
+        // 접종예약취소건 등록(RegCancelBooking) //
+                    
+        Cancellation cancellation = new Cancellation();
             
-            cancellation.setBookingId(bookCancelled.getBookingId());
-            cancellation.setVaccineId(bookCancelled.getVaccineId());
-            cancellation.setUserId(bookCancelled.getUserId());
+        cancellation.setBookingId(bookCancelled.getBookingId());
+        cancellation.setVaccineId(bookCancelled.getVaccineId());
+        cancellation.setUserId(bookCancelled.getUserId());
             
-            cancellationRepository.save(cancellation);
-        // }        
-            
+        cancellationRepository.save(cancellation);
+         
     }
-
-
-    @StreamListener(KafkaProcessor.INPUT)
-    public void whatever(@Payload String eventString){}
-
-
     
 }

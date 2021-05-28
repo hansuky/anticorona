@@ -20,13 +20,11 @@ public class Injection {
     @PreUpdate
     public void onPreUpdate(){
 
-        if("Injection_Completed".equals(this.status)){
-            // 접종 완료
-            VcCompleted vcCompleted = new VcCompleted();
-            BeanUtils.copyProperties(this, vcCompleted);
-            vcCompleted.publishAfterCommit();
-        }
-
+        // 접종 완료 처리 //
+        VcCompleted vcCompleted = new VcCompleted();
+        BeanUtils.copyProperties(this, vcCompleted);
+        vcCompleted.setStatus("접종완료");
+        vcCompleted.publishAfterCommit();      
     }
 
 
