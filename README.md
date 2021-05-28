@@ -1,5 +1,5 @@
 # 3rd Team Project
-## 코로나 백신 접종 알리미
+## 코로나 백신 접종 예약 관리
 
 ### Table of contents
 
