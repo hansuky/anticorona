@@ -49,9 +49,9 @@
 # 분석/설계
 
 ## AS-IS 조직 (Horizontally-Aligned)
-![Horizontally-Aligned](https://user-images.githubusercontent.com/2360083/119254418-278d0d80-bbf1-11eb-83d1-494ba83aeaf1.png)
+![Horizontally-Aligned](https://user-images.githubusercontent.com/2360083/119989206-e0908500-c001-11eb-8a4a-b9faff3007a6.png)
 
 ## TO-BE 조직 (Vertically-Aligned)
-![Vertically-Aligned](https://user-images.githubusercontent.com/2360083/119254421-2eb41b80-bbf1-11eb-82fe-53c5dcd366f7.png)
+![Vertically-Aligned](https://user-images.githubusercontent.com/2360083/119989212-e25a4880-c001-11eb-989e-3731a4e612b2.png)
 
 ## Event Storming 결과
