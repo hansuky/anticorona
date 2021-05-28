@@ -15,6 +15,8 @@ public class Vaccine {
     private String vcName;
     private Long stock;
     private Long bookQty;
+    //@Transient
+    private String command; //command 구분용 변수
 
     @PostPersist
     public void onPostPersist(){
@@ -27,16 +29,17 @@ public class Vaccine {
 
     @PostUpdate
     public void onPostUpdate(){
-        VcStockAdded vcStockAdded = new VcStockAdded();
-        BeanUtils.copyProperties(this, vcStockAdded);
-        vcStockAdded.publishAfterCommit();
-
-
-        StockModified stockModified = new StockModified();
-        BeanUtils.copyProperties(this, stockModified);
-        stockModified.publishAfterCommit();
-
-
+        if(this.getCommand() != null) {
+            if(this.getCommand().equals("addVcStock")) {
+                VcStockAdded vcStockAdded = new VcStockAdded();
+                BeanUtils.copyProperties(this, vcStockAdded);
+                vcStockAdded.publishAfterCommit();
+            } else if(this.getCommand().equals("chkAndModBookQty")){
+                StockModified stockModified = new StockModified();
+                BeanUtils.copyProperties(this, stockModified);
+                stockModified.publishAfterCommit();
+            }
+        }
     }
 
 
@@ -69,6 +72,13 @@ public class Vaccine {
         this.bookQty = bookQty;
     }
 
+    public String getCommand() {
+        return command;
+    }
+    public void setCommand(String command) {
+        this.command = command;
+    }
+
     /**
      * 예약 가능 여부를 확인합니다.
      * 예약 수량을 뺀 재고수량이 0 보다 큰 경우입니다.
@@ -77,6 +87,4 @@ public class Vaccine {
     public boolean canBook(){
         return this.stock - this.bookQty > 0;
     }
-
-
 }
